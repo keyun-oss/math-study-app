@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>小数的加减法运算 · 数学应用提前学</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #f3f6fa; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
+    .card-hover { transition: all 0.2s ease; }
+    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.02); }
+    .step-badge { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 999px; background: #2563eb; color: white; font-weight: 600; font-size: 0.9rem; margin-right: 10px; flex-shrink: 0; }
+    .game-progress-bar { height: 8px; background: #e5e7eb; border-radius: 20px; overflow: hidden; }
+    .game-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); transition: width 0.4s ease; }
+    .flash-green { animation: flashGreen 0.5s ease; }
+    @keyframes flashGreen { 0% { background-color: #bbf7d0; } 100% { background-color: transparent; } }
+  </style>
+</head>
+<body>
+<div class="max-w-3xl mx-auto px-4 py-6 md:py-10 space-y-8">
+  <!-- 模块一：知识讲解区 -->
+  <section class="bg-white/90 backdrop-blur-sm shadow-2xl rounded-2xl p-5 md:p-7 border border-white/30 card-hover">
+    <h1 class="text-3xl font-bold text-blue-700 flex items-center gap-2 mb-4">🧮 小数的加减法运算</h1>
+    <div class="space-y-3 text-gray-700">
+      <div class="bg-blue-50/70 rounded-xl p-4 border-l-4 border-blue-500">
+        <p class="font-semibold text-blue-800">📌 小数加减法的意义</p >
+        <p class="text-sm md:text-base">加法：把两个小数合并成一个数。 减法：已知两个数的和与其中一个加数，求另一个加数。</p >
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+        <p class="font-semibold text-blue-800">🧾 计算方法 · 四步走</p >
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 text-sm md:text-base">
+          <div class="bg-blue-100 rounded-lg py-2 px-3 text-center">① 对齐数位</div>
+          <div class="bg-blue-100 rounded-lg py-2 px-3 text-center">② 从低位算起</div>
+          <div class="bg-blue-100 rounded-lg py-2 px-3 text-center">③ 点上小数点</div>
+          <div class="bg-blue-100 rounded-lg py-2 px-3 text-center">④ 化简结果</div>
+        </div>
+        <div class="mt-2 text-sm bg-orange-50 border border-orange-200 rounded-lg p-2 text-orange-800">💡 整数可以看作小数部分为0，如 6 = 6.00</div>
+      </div>
+      <div class="mt-4 bg-white rounded-xl border border-gray-200 p-4">
+        <p class="font-semibold text-blue-800">📝 示例：6.70 + 3.25</p >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+          <div class="bg-gray-50 p-3 rounded-lg space-y-1 text-sm">
+            <div><span class="step-badge">①</span> 对齐数位：<span class="font-mono">6.70</span> + <span class="font-mono">3.25</span></div>
+            <div><span class="step-badge">②</span> 从低位算起：0+5=5, 7+2=9, 6+3=9</div>
+            <div><span class="step-badge">③</span> 点上小数点：<span class="font-mono">9.95</span></div>
+            <div><span class="step-badge">④</span> 化简结果：9.95</div>
+          </div>
+          <div class="flex items-center justify-center bg-green-50 border-2 border-green-300 rounded-xl p-4">
+            <span class="text-2xl font-bold text-green-700">9.95</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 模块二：互动示例 -->
+  <section class="bg-white/90 backdrop-blur-sm shadow-2xl rounded-2xl p-5 md:p-7 border border-white/30 card-hover">
+    <h2 class="text-2xl font-bold text-blue-700 flex items-center gap-2">✏️ 试一试 · 6.70 + 3.25 = ?</h2>
+    <div class="mt-4 flex flex-wrap items-center gap-3">
+      <input type="text" id="tryInput" placeholder="输入答案" class="w-36 px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition text-lg">
+      <button id="tryVerifyBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition font-medium shadow-md">验证</button>
+      <button id="tryClearBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-3 rounded-xl transition font-medium">清空</button>
+    </div>
+    <div id="tryFeedback" class="mt-3 text-lg min-h-[2.5rem]"></div>
+  </section>
+
+  <!-- 模块三：游戏专区 -->
+  <section class="bg-white/90 backdrop-blur-sm shadow-2xl rounded-2xl p-5 md:p-7 border border-white/30 card-hover" id="gameSection">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <h2 class="text-2xl font-bold text-blue-700 flex items-center gap-1">🌟 小数之星大冒险</h2>
+      <div class="flex items-center gap-4 text-sm md:text-base">
+        <span class="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full border border-yellow-200">⭐ 得分 <span id="gameScore" class="font-bold text-yellow-700 min-w-[24px]">0</span></span>
+        <span class="flex items-center gap-1 bg-red-50 px-3 py-1 rounded-full border border-red-200">🔥 连击 <span id="gameCombo" class="font-bold text-red-600 min-w-[24px]">0</span></span>
+      </div>
+    </div>
+    <div class="mt-3 game-progress-bar"><div id="gameProgressFill" class="game-progress-fill" style="width:0%"></div></div>
+    <div class="flex justify-between text-xs text-gray-500 mt-1"><span>第 <span id="gameCurrentRound">0</span> / 10 题</span><span id="gameProgressPercent">0%</span></div>
+
+    <div class="mt-5 bg-gradient-to-br from-blue-50/60 to-indigo-50/60 rounded-2xl p-5 border border-blue-200/60">
+      <div class="flex justify-between items-center">
+        <span class="text-sm font-medium text-gray-500">第 <span id="gameRoundDisplay">1</span> / 10 题</span>
+        <span id="gameOperatorIcon" class="text-lg">➕</span>
+      </div>
+      <div class="text-center py-3 text-3xl md:text-4xl font-bold text-gray-800 font-mono tracking-wide">
+        <span id="gameNum1">0.00</span> <span id="gameOpSymbol">+</span> <span id="gameNum2">0.00</span> = <span class="text-blue-600">?</span>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-3 mt-4">
+        <input type="text" id="gameInput" placeholder="输入答案" class="w-40 px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition text-lg text-center">
+        <button id="gameSubmitBtn" class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 py-3 rounded-xl transition font-medium shadow-md">🚀 发射验证</button>
+        <button id="gameSkipBtn" class="text-sm text-gray-500 hover:text-gray-700 underline underline-offset-2 transition">跳过此题</button>
+      </div>
+      <div id="gameFeedback" class="mt-3 text-center min-h-[2.8rem] text-base font-medium"></div>
+    </div>
+
+    <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+      <button id="gameResetBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-xl transition font-medium shadow-sm">🔄 重新开局</button>
+      <span id="gameStatus" class="text-sm text-gray-500">✨ 准备开始</span>
+    </div>
+    <div id="gameResultPanel" class="mt-4 hidden bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-center">
+      <p class="text-xl font-bold text-amber-800">🏆 冒险结束！</p >
+      <p class="text-lg">最终得分：<span id="finalScoreDisplay" class="font-bold text-blue-700">0</span> 分</p >
+      <p id="finalTitleDisplay" class="text-2xl font-extrabold text-purple-700 mt-1">🌟 小数高手！</p >
+    </div>
+  </section>
+
+  <!-- 模块四：视频按钮 -->
+  <div class="text-center">
+    <button id="videoBtn" class="bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 text-lg">🎬 看动画讲解视频</button>
+  </div>
+  <p class="text-xs text-center text-gray-400 mt-2">视频链接占位，可替换为 Bilibili 等地址</p >
+</div>
+
+<script>
+(function(){
+  // ===== 互动示例 =====
+  const tryInput = document.getElementById('tryInput');
+  const tryVerifyBtn = document.getElementById('tryVerifyBtn');
+  const tryClearBtn = document.getElementById('tryClearBtn');
+  const tryFeedback = document.getElementById('tryFeedback');
+  function verifyTry() {
+    const raw = tryInput.value.trim();
+    if (raw === '') { tryFeedback.innerHTML = '<span class="text-orange-500">⚠️ 请输入答案</span>'; return; }
+    const val = parseFloat(raw);
+    if (isNaN(val)) { tryFeedback.innerHTML = '<span class="text-orange-500">⚠️ 请输入有效数字</span>'; return; }
+    const correct = 9.95;
+    if (Math.abs(val - correct) < 0.001) {
+      tryFeedback.innerHTML = '<span class="text-green-600 font-bold">✅ 完全正确！ 6.70 + 3.25 = 9.95 🎉</span>';
+    } else {
+      tryFeedback.innerHTML = '<span class="text-red-500 font-bold">❌ 再想想，小数点对齐了吗？</span>';
+    }
+  }
+  tryVerifyBtn.addEventListener('click', verifyTry);
+  tryInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); verifyTry(); } });
+  tryClearBtn.addEventListener('click', () => { tryInput.value = ''; tryFeedback.innerHTML = ''; });
+
+  // ===== 游戏核心 =====
+  const MAX_ROUNDS = 10;
+  const gameScoreEl = document.getElementById('gameScore');
+  const gameComboEl = document.getElementById('gameCombo');
+  const gameProgressFill = document.getElementById('gameProgressFill');
+  const gameCurrentRound = document.getElementById('gameCurrentRound');
+  const gameProgressPercent = document.getElementById('gameProgressPercent');
+  const gameRoundDisplay = document.getElementById('gameRoundDisplay');
+  const gameOperatorIcon = document.getElementById('gameOperatorIcon');
+  const gameNum1 = document.getElementById('gameNum1');
+  const gameNum2 = document.getElementById('gameNum2');
+  const gameOpSymbol = document.getElementById('gameOpSymbol');
+  const gameInput = document.getElementById('gameInput');
+  const gameSubmitBtn = document.getElementById('gameSubmitBtn');
+  const gameSkipBtn = document.getElementById('gameSkipBtn');
+  const gameFeedba
